@@ -22,3 +22,19 @@ $positive: #21ba45;
 $negative: #c10015;
 $info: #31ccec;
 $warning: #f2c037;
+
+.q-icon {
+  cursor: pointer;
+}
+
+.line-strong {
+  background-color: #cbced3;
+  width: 100%;
+  height: 8px;
+}
+
+.line {
+  background-color: #e8dcdc;
+  width: 100%;
+  height: 1px;
+}

@@ -1,15 +1,5 @@
 <template>
-  <q-page>
-    <div class="flex flex-center">
-      <q-tabs v-model="tab" class="text-teal q-mx-sm full-width">
-        <q-tab name="home" icon="fas fa-home" />
-        <q-tab name="users" icon="fas fa-users" />
-        <q-tab name="video" icon="ondemand_video" />
-        <q-tab name="store" icon="fas fa-store" />
-        <q-tab name="notification" icon="notifications" />
-        <q-icon name="fas fa-bars" size="30px" class="q-mr-sm q-icon-color" />
-      </q-tabs>
-    </div>
+  <q-page class="q-mt-sm">
     <div class="row q-pa-sm full-width">
       <q-avatar class="q-mr-sm">
         <img src="https://cdn.quasar.dev/img/avatar.png" />
@@ -116,41 +106,89 @@
       </q-scroll-area>
     </div>
     <div class="line-strong q-mt-md" />
+    <Post v-for="item in post" :key="item.url" :post="item" />
   </q-page>
 </template>
 
 <script>
+import Post from "../components/Post";
 export default {
   name: "PageIndex",
+  components: {
+    Post,
+  },
   data() {
     return {
-      tab: "home",
       text: "",
+      post: {},
     };
+  },
+
+  beforeMount() {
+    this.post = [
+      {
+        avatar: "https://cdn.quasar.dev/img/avatar.png",
+        name: "Daniel",
+        time: "Ontem às 19:29",
+        text:
+          "Hoje o dia amanheceu assim: churrasco, alegria e família! <b>#FAMILIA</b>",
+        url:
+          "https://cdn.pixabay.com/photo/2017/10/03/01/12/family-2811003_960_720.jpg",
+        likes: 169,
+        comments: 6,
+        shareds: 4,
+      },
+      {
+        avatar: "https://cdn.quasar.dev/img/avatar.png",
+        name: "Carla",
+        time: "Ontem às 21:29",
+        text: "Irmãos <b>#Familia</b>",
+        url:
+          "https://cdn.pixabay.com/photo/2014/09/23/06/04/brothers-457237_960_720.jpg",
+        likes: 99,
+        comments: 3,
+        shareds: 6,
+      },
+      {
+        avatar: "https://cdn.quasar.dev/img/avatar.png",
+        name: "Paulo",
+        time: "Ontem às 17:29",
+        text: "Mãe e filha na praia.",
+        url:
+          "https://cdn.pixabay.com/photo/2016/11/08/05/08/adult-1807500_960_720.jpg",
+        likes: 99,
+        comments: 3,
+        shareds: 6,
+      },
+      {
+        avatar: "https://cdn.quasar.dev/img/avatar.png",
+        name: "Lara",
+        time: "Ontem às 16:29",
+        text: "É incrível como eles ficaram lindos. <b>#look</b>",
+        url:
+          "https://cdn.pixabay.com/photo/2015/06/22/08/37/children-817365_960_720.jpg",
+        likes: 299,
+        comments: 43,
+        shareds: 16,
+      },
+      {
+        avatar: "https://cdn.quasar.dev/img/avatar.png",
+        name: "Marcela",
+        time: "Ontem às 23:29",
+        text:
+          "Eu e minhas irmãs no meu aniversário de 30 anos, foi só festa e alegria <b>#TRINTOU</b>",
+        url:
+          "https://cdn.pixabay.com/photo/2018/01/24/19/49/people-3104635_960_720.jpg",
+        likes: 299,
+        comments: 43,
+        shareds: 16,
+      },
+    ];
   },
 };
 </script>
 
 <style lang="scss">
-.q-tabs__content {
-  height: 70px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.q-tab__icon {
-  font-size: 28px;
-}
-.q-tab {
-  padding: 5px;
-}
-.q-tab--active {
-  color: #1678f3;
-}
-.q-tab--inactive {
-  color: #656668;
-}
 .q-icon-color {
   color: #656668;
 }
@@ -160,21 +198,11 @@ export default {
 .q-field__control {
   height: 45px;
 }
-.line {
-  background-color: #cbced3;
-  width: 100%;
-  height: 1px;
-}
+
 .vertical-line {
   background-color: #cbced3;
   width: 1px;
   height: 20px;
-}
-
-.line-strong {
-  background-color: #cbced3;
-  width: 100%;
-  height: 8px;
 }
 
 .rounded-button {
