@@ -127,6 +127,7 @@ export default {
   beforeMount() {
     this.post = [
       {
+        id:1,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Daniel",
         time: "Ontem às 19:29",
@@ -139,6 +140,7 @@ export default {
         shareds: 4,
       },
       {
+        id:2,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Carla",
         time: "Ontem às 21:29",
@@ -150,6 +152,7 @@ export default {
         shareds: 6,
       },
       {
+        id:3,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Paulo",
         time: "Ontem às 17:29",
@@ -161,6 +164,7 @@ export default {
         shareds: 6,
       },
       {
+        id:4,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Lara",
         time: "Ontem às 16:29",
@@ -172,6 +176,7 @@ export default {
         shareds: 16,
       },
       {
+        id:5,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Marcela",
         time: "Ontem às 23:29",
