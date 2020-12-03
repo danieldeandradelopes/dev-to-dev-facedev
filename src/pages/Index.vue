@@ -7,6 +7,7 @@
       <q-input
         rounded
         outlined
+        @click="open()"
         v-model="text"
         label="No que você está pensando?"
         label-color="black"
@@ -107,6 +108,82 @@
     </div>
     <div class="line-strong q-mt-md" />
     <Post v-for="item in post" :key="item.url" :post="item" />
+
+    <q-dialog
+      v-model="dialog"
+      position="bottom"
+      full-height
+      full-width
+      maximized
+    >
+      <q-card>
+        <div
+          class="q-ma-md q-pa-sm row items-center justify-between full-width"
+        >
+          <div>
+            <q-icon
+              name="arrow_back"
+              size="23px"
+              class="q-mr-sm"
+              @click="dialog = false"
+            ></q-icon>
+            <span>Criar publicação</span>
+          </div>
+          <span class="q-mr-sm text-grey">PUBLICAR</span>
+          <div class="line q-mt-md"></div>
+        </div>
+        <div class="row q-ma-md">
+          <q-avatar class="q-mr-sm">
+            <img src="https://cdn.quasar.dev/img/avatar.png" />
+          </q-avatar>
+          <div class="column">
+            <strong>Daniel Lopes</strong>
+            <div class="row">
+              <div
+                class="custom-button row items-center justify-around q-mr-sm"
+              >
+                <q-icon name="fas fa-globe-asia" size="12px"></q-icon>
+                <strong> Público</strong>
+                <q-icon name="arrow_drop_down" size="25px"></q-icon>
+              </div>
+              <div class="custom-button row items-center justify-around">
+                <q-icon name="add" size="12px"></q-icon>
+                <strong> Álbum</strong>
+                <q-icon name="arrow_drop_down" size="25px"></q-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <q-input
+          v-model="text"
+          filled
+          class="custom-textarea full-width"
+          placeholder="No que você está pensando?"
+          label-color="grey-5"
+          type="textarea"
+          rows="20"
+          bg-color="white"
+        />
+
+        <q-card-section
+          class="row items-center no-wrap"
+          style="height: 100% !important"
+        >
+          <div>
+            <div class="text-black">Adicionar à sua publicação</div>
+          </div>
+
+          <q-space />
+
+          <div class="row justify-between items-center" style="width: 30%">
+            <q-icon name="video_call" size="28px" color="purple" />
+            <q-icon color="light-green-7" name="far fa-images" size="20px" />
+            <q-icon color="blue" name="person" size="25px" />
+            <q-icon color="orange-6" name="insert_emoticon" size="25px" />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -121,13 +198,18 @@ export default {
     return {
       text: "",
       post: {},
+      dialog: true,
     };
   },
-
+  methods: {
+    open() {
+      this.dialog = true;
+    },
+  },
   beforeMount() {
     this.post = [
       {
-        id:1,
+        id: 1,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Daniel",
         time: "Ontem às 19:29",
@@ -140,7 +222,7 @@ export default {
         shareds: 4,
       },
       {
-        id:2,
+        id: 2,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Carla",
         time: "Ontem às 21:29",
@@ -152,7 +234,7 @@ export default {
         shareds: 6,
       },
       {
-        id:3,
+        id: 3,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Paulo",
         time: "Ontem às 17:29",
@@ -164,7 +246,7 @@ export default {
         shareds: 6,
       },
       {
-        id:4,
+        id: 4,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Lara",
         time: "Ontem às 16:29",
@@ -176,7 +258,7 @@ export default {
         shareds: 16,
       },
       {
-        id:5,
+        id: 5,
         avatar: "https://cdn.quasar.dev/img/avatar.png",
         name: "Marcela",
         time: "Ontem às 23:29",
@@ -255,6 +337,38 @@ export default {
     border: 3px solid #1678f3;
     border-radius: 50%;
     width: 50%;
+  }
+}
+
+.custom-button {
+  width: 90px;
+  height: 30px;
+  padding: 2px;
+  font-size: 12px !important;
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+  cursor: pointer;
+
+  .q-icon {
+    color: #969393;
+  }
+  strong {
+    color: #969393;
+  }
+}
+
+.custom-textarea {
+  font-size: 20px;
+  padding: 10px;
+  .q-field__control {
+    padding: 0px;
+  }
+
+  .q-field__control-container {
+    background-color: white;
+  }
+  .q-placeholder {
+    background-color: white;
   }
 }
 </style>
