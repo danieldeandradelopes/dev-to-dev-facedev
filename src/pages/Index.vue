@@ -7,6 +7,7 @@
       <q-input
         rounded
         outlined
+        @click="open()"
         v-model="text"
         @click="dialog = true"
         label="No que você está pensando?"
@@ -26,7 +27,7 @@
         <label> Ao vivo</label>
       </div>
       <div class="vertical-line" />
-      <div>
+      <div @click="open">
         <q-icon
           color="light-green-7"
           name="far fa-images"
@@ -144,7 +145,6 @@
           <q-avatar class="q-mr-sm">
             <img src="https://cdn.quasar.dev/img/avatar.png" />
           </q-avatar>
-
           <div class="column">
             <strong>Daniel Lopes</strong>
             <div class="row">
@@ -165,7 +165,6 @@
             </div>
           </div>
         </div>
-
         <q-input
           v-model="text"
           filled
@@ -371,7 +370,6 @@ export default {
   .q-icon {
     color: #969393;
   }
-
   strong {
     color: #969393;
   }
