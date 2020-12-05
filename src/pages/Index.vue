@@ -8,6 +8,7 @@
         rounded
         outlined
         v-model="text"
+        @click="dialog = true"
         label="No que você está pensando?"
         label-color="black"
       />
@@ -107,11 +108,111 @@
     </div>
     <div class="line-strong q-mt-md" />
     <Post v-for="item in post" :key="item.url" :post="item" />
+
+    <q-dialog
+      v-model="dialog"
+      full-height
+      full-width
+      maximized
+      position="bottom"
+    >
+      <q-card>
+        <div
+          class="q-ma-md q-pa-sm row items-center justify-between full-width"
+        >
+          <div>
+            <q-icon
+              name="arrow_back"
+              size="23px"
+              class="q-mr-sm"
+              @click="dialog = false"
+            >
+            </q-icon>
+            <span>Criar publicação </span>
+          </div>
+          <span
+            class="q-mr-sm"
+            @click="sendPost"
+            :class="image !== '' ? 'text-blue' : 'text-grey'"
+          >
+            PUBLICAR
+          </span>
+          <div class="line q-mt-md"></div>
+        </div>
+
+        <div class="row q-ma-md">
+          <q-avatar class="q-mr-sm">
+            <img src="https://cdn.quasar.dev/img/avatar.png" />
+          </q-avatar>
+
+          <div class="column">
+            <strong>Daniel Lopes</strong>
+            <div class="row">
+              <div
+                class="custom-button row items-center justify-around q-mr-sm"
+              >
+                <q-icon name="fas fa-globe-asia" size="12px" />
+                <strong>Público</strong>
+                <q-icon name="arrow_drop_down" size="25px" />
+              </div>
+              <div
+                class="custom-button row items-center justify-around q-mr-sm"
+              >
+                <q-icon name="add" size="12px" />
+                <strong>Álbum</strong>
+                <q-icon name="arrow_drop_down" size="25px" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <q-input
+          v-model="text"
+          filled
+          class="custom-textarea full-width"
+          label-color="grey-5"
+          rows="20"
+          :placeholder="
+            image === ''
+              ? 'No que você está pensando?'
+              : 'Diga algo sobre essa foto...'
+          "
+          :type="image === '' ? 'textarea' : 'text'"
+          bg-color="white"
+        >
+        </q-input>
+
+        <q-img v-if="image !== ''" :src="image" :ratio="1"> </q-img>
+
+        <q-card-section class="row items-cneter no-wrap">
+          <span class="text-black"> Adicionar à sua publicação</span>
+
+          <q-space />
+
+          <div class="row justify-between items-center" style="width: 30%">
+            <q-icon
+              name="video_call"
+              size="28px"
+              color="purple"
+              @click="openUpload()"
+            >
+            </q-icon>
+            <q-icon name="far fa-images" size="20px" color="light-green-7">
+            </q-icon>
+            <q-icon name="person" size="20px" color="blue"> </q-icon>
+            <q-icon name="insert_emoticon" size="20px" color="orange-6">
+            </q-icon>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-file v-model="file" v-show="false"> </q-file>
   </q-page>
 </template>
 
 <script>
 import Post from "../components/Post";
+import api from "../services/api";
 export default {
   name: "PageIndex",
   components: {
@@ -120,75 +221,75 @@ export default {
   data() {
     return {
       text: "",
+      file: [],
       post: {},
+      dialog: false,
+      image: "",
     };
   },
+  methods: {
+    triggerNegative() {
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        message: `Você precisa enviar uma imagem!`,
+      });
+    },
+    async sendPost() {
+      if (this.image === "") {
+        this.triggerNegative();
+        return;
+      }
 
-  beforeMount() {
-    this.post = [
-      {
-        id:1,
-        avatar: "https://cdn.quasar.dev/img/avatar.png",
-        name: "Daniel",
-        time: "Ontem às 19:29",
-        text:
-          "Hoje o dia amanheceu assim: churrasco, alegria e família! <b>#FAMILIA</b>",
-        url:
-          "https://cdn.pixabay.com/photo/2017/10/03/01/12/family-2811003_960_720.jpg",
-        likes: 169,
-        comments: 6,
-        shareds: 4,
-      },
-      {
-        id:2,
-        avatar: "https://cdn.quasar.dev/img/avatar.png",
-        name: "Carla",
-        time: "Ontem às 21:29",
-        text: "Irmãos <b>#Familia</b>",
-        url:
-          "https://cdn.pixabay.com/photo/2014/09/23/06/04/brothers-457237_960_720.jpg",
-        likes: 99,
-        comments: 3,
-        shareds: 6,
-      },
-      {
-        id:3,
-        avatar: "https://cdn.quasar.dev/img/avatar.png",
-        name: "Paulo",
-        time: "Ontem às 17:29",
-        text: "Mãe e filha na praia.",
-        url:
-          "https://cdn.pixabay.com/photo/2016/11/08/05/08/adult-1807500_960_720.jpg",
-        likes: 99,
-        comments: 3,
-        shareds: 6,
-      },
-      {
-        id:4,
-        avatar: "https://cdn.quasar.dev/img/avatar.png",
-        name: "Lara",
-        time: "Ontem às 16:29",
-        text: "É incrível como eles ficaram lindos. <b>#look</b>",
-        url:
-          "https://cdn.pixabay.com/photo/2015/06/22/08/37/children-817365_960_720.jpg",
-        likes: 299,
-        comments: 43,
-        shareds: 16,
-      },
-      {
-        id:5,
-        avatar: "https://cdn.quasar.dev/img/avatar.png",
-        name: "Marcela",
-        time: "Ontem às 23:29",
-        text:
-          "Eu e minhas irmãs no meu aniversário de 30 anos, foi só festa e alegria <b>#TRINTOU</b>",
-        url:
-          "https://cdn.pixabay.com/photo/2018/01/24/19/49/people-3104635_960_720.jpg",
-        likes: 299,
-        comments: 43,
-        shareds: 16,
-      },
-    ];
+      const body = {
+        text: this.text,
+        picture: this.image,
+      };
+
+      await api
+        .post("post", body, {})
+        .then((response) => {
+          this.dialog = false;
+          this.text = "";
+          this.image = "";
+          this.post = [response.data, ...this.post];
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    openUpload() {
+      document.querySelector(".q-field__input").click();
+    },
+  },
+  watch: {
+    async file() {
+      var formData = new FormData();
+      formData.append("image", this.file);
+
+      await api
+        .post("upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          this.image = "http://localhost:3000/" + response.data.image;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  async beforeMount() {
+    await api
+      .get("post", {})
+      .then((response) => {
+        this.post = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 };
 </script>
@@ -255,6 +356,24 @@ export default {
     border: 3px solid #1678f3;
     border-radius: 50%;
     width: 50%;
+  }
+}
+
+.custom-button {
+  width: 90px;
+  height: 30px;
+  padding: 2px;
+  font-size: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+  cursor: pointer;
+
+  .q-icon {
+    color: #969393;
+  }
+
+  strong {
+    color: #969393;
   }
 }
 </style>
